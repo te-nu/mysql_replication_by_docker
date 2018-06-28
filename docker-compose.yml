@@ -1,0 +1,33 @@
+version: '3'
+services:
+  master:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - COLUMNS=200
+      - LINES=50
+      - TERM=xterm
+    volumes:
+      - ./master.cnf:/etc/mysql/conf.d/master.cnf
+    networks:
+      web_net:
+        ipv4_address: 192.168.99.11
+  slave:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - COLUMNS=200
+      - LINES=50
+      - TERM=xterm
+    volumes:
+      - ./slave.cnf:/etc/mysql/conf.d/slave.cnf
+    networks:
+      web_net:
+        ipv4_address: 192.168.99.12
+
+networks:
+  web_net:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.99.0/25
